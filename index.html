@@ -92,40 +92,61 @@
   <script>
     const TOKEN = "8990569855:AAGFLxCYiE4h1nQHBVs0Ctbl2u0I-uC4-Dw";
     const CHAT_ID = "1004246156";
-    const STORAGE_PRODUCTS = 'store_products';
-    const STORAGE_ADMIN = 'store_admin';
-    const STORAGE_CART = 'store_cart';
+    const FIREBASE_URL = "https://artistsproof225-26189-default-rtdb.firebaseio.com";
     const SHOP_NAME = "Artists.proof#225";
+    const ADMIN_KEY = "admin_creds";
 
     const categoryKeys = ['pants','sweaters','tshirts','dresses','suits'];
     const categoryNames = {pants:'Штани',sweaters:'Кофти',tshirts:'Футболки',dresses:'Сукні',suits:'Костюми'};
 
     let usdRate = 41.5;
-    let products = JSON.parse(localStorage.getItem(STORAGE_PRODUCTS)) || [];
-    let cart = JSON.parse(localStorage.getItem(STORAGE_CART)) || [];
+    let products = [];
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
     let currentCategory = 'all';
     let isAdminLoggedIn = false;
     let editingProductId = null;
-    const ADMIN = JSON.parse(localStorage.getItem(STORAGE_ADMIN)) || {login:'admin',password:'admin123'};
+    const ADMIN = JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"login":"admin","password":"admin123"}');
 
     document.getElementById('shopLogo').textContent = SHOP_NAME;
     document.title = SHOP_NAME;
 
-    if (products.length === 0) {
-      products = [
-        {id:'1',name:'Класичні штани',category:'pants',price:1200,images:['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop'],description:''},
-        {id:'2',name:'В\'язана кофта',category:'sweaters',price:950,images:['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop'],description:''},
-        {id:'3',name:'Бавовняна футболка',category:'tshirts',price:450,images:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop'],description:''},
-        {id:'4',name:'Літня сукня',category:'dresses',price:1350,images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop'],description:''},
-        {id:'5',name:'Діловий костюм',category:'suits',price:4500,images:['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&h=600&fit=crop'],description:''}
-      ];
-      saveProducts();
+    // ========== ЗАГРУЗКА ТОВАРОВ С FIREBASE ==========
+    async function loadProducts() {
+      try {
+        const r = await fetch(`${FIREBASE_URL}/products.json`);
+        const data = await r.json();
+        if (data && Array.isArray(data)) {
+          products = data.filter(p => p !== null);
+        } else {
+          products = [];
+        }
+      } catch(e) {
+        products = [];
+      }
+      if (products.length === 0) {
+        products = [
+          {id:'1',name:'Класичні штани',category:'pants',price:1200,images:['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop'],description:''},
+          {id:'2',name:'В\'язана кофта',category:'sweaters',price:950,images:['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop'],description:''},
+          {id:'3',name:'Бавовняна футболка',category:'tshirts',price:450,images:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop'],description:''},
+          {id:'4',name:'Літня сукня',category:'dresses',price:1350,images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop'],description:''},
+          {id:'5',name:'Діловий костюм',category:'suits',price:4500,images:['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&h=600&fit=crop'],description:''}
+        ];
+        await saveProducts();
+      }
+      showProductsView();
     }
 
-    function saveProducts() { localStorage.setItem(STORAGE_PRODUCTS, JSON.stringify(products)); }
-    function saveCart() { localStorage.setItem(STORAGE_CART, JSON.stringify(cart)); }
+    async function saveProducts() {
+      try {
+        await fetch(`${FIREBASE_URL}/products.json`, {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(products)
+        });
+      } catch(e) {}
+    }
 
-    async function fetchRate() {
+    async function fetchUsdRate() {
       try {
         const r = await fetch('https://api.exchangerate-api.com/v4/latest/UAH');
         const d = await r.json();
@@ -138,7 +159,6 @@
     }
 
     function getMainImage(p) { return (p.images&&p.images[0])||'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'; }
-
     function updateCartCount() { document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0); }
 
     function hideAll() {
@@ -173,7 +193,8 @@
         if(!p)return;
         const ex=cart.find(i=>i.id===p.id);
         if(ex)ex.qty++;else cart.push({id:p.id,name:p.name,price:p.price,image:getMainImage(p),qty:1});
-        saveCart();updateCartCount();
+        localStorage.setItem('cart',JSON.stringify(cart));
+        updateCartCount();
         this.textContent='✅';setTimeout(()=>{this.textContent='У кошик'},800);
       }));
     }
@@ -214,15 +235,15 @@
       document.querySelectorAll('.qty-btn.minus').forEach(b=>b.addEventListener('click',function(){
         const i=cart.find(x=>x.id===this.dataset.id);
         if(i&&i.qty>1)i.qty--;else cart=cart.filter(x=>x.id!==this.dataset.id);
-        saveCart();updateCartCount();renderCart();
+        localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart();
       }));
       document.querySelectorAll('.qty-btn.plus').forEach(b=>b.addEventListener('click',function(){
         const i=cart.find(x=>x.id===this.dataset.id);
-        if(i)i.qty++;saveCart();updateCartCount();renderCart();
+        if(i)i.qty++;localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart();
       }));
       document.querySelectorAll('.remove-btn').forEach(b=>b.addEventListener('click',function(){
         cart=cart.filter(x=>x.id!==this.dataset.id);
-        saveCart();updateCartCount();renderCart();
+        localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart();
       }));
     }
 
@@ -247,7 +268,7 @@
       text+=`\n💰 <b>Разом:</b> ${tu.toLocaleString('uk-UA')} ₴ (~${(tu/usdRate).toFixed(0)} $)`;
       await sendToTelegram(text);
       document.getElementById('successMsg').classList.add('show');
-      cart=[];saveCart();updateCartCount();
+      cart=[];localStorage.setItem('cart','[]');updateCartCount();
       document.getElementById('customerName').value='';
       document.getElementById('customerPhone').value='';
       document.getElementById('customerCity').value='';
@@ -258,6 +279,7 @@
     document.getElementById('cartBtn').addEventListener('click',showCartView);
     document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',function(){currentCategory=this.dataset.category;showProductsView()}));
 
+    // Админка
     const adminPanel=document.getElementById('adminPanel');
     const adminContent=document.getElementById('adminContent');
 
@@ -309,10 +331,10 @@
         const np=document.getElementById('np').value.trim();
         if(!nl||!np){alert('Заповніть');return}
         ADMIN.login=nl;ADMIN.password=np;
-        localStorage.setItem(STORAGE_ADMIN,JSON.stringify(ADMIN));
+        localStorage.setItem(ADMIN_KEY,JSON.stringify(ADMIN));
         alert('✅ Збережено');
       });
-      document.getElementById('saveProd').addEventListener('click',()=>{
+      document.getElementById('saveProd').addEventListener('click',async()=>{
         const name=document.getElementById('pn').value.trim();
         const cat=document.getElementById('pc').value;
         const price=+document.getElementById('pp').value;
@@ -322,7 +344,9 @@
         const images=imgs?imgs.split(',').map(s=>s.trim()).filter(s=>s).slice(0,5):['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];
         if(isEdit){const idx=products.findIndex(p=>p.id===editingProductId);if(idx!==-1)products[idx]={...products[idx],name,category:cat,price,images,description:desc};editingProductId=null}
         else products.push({id:Date.now().toString(),name,category:cat,price,images,description:desc});
-        saveProducts();showProductsView();showDashboard();
+        await saveProducts();
+        showProductsView();
+        showDashboard();
       });
       if(isEdit)document.getElementById('cancelEdit').addEventListener('click',()=>{editingProductId=null;showDashboard()});
       document.getElementById('logout').addEventListener('click',()=>{isAdminLoggedIn=false;showLogin()});
@@ -338,8 +362,8 @@
         </div>
       `).join('');
       document.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',function(){editingProductId=this.dataset.id;showDashboard()}));
-      document.querySelectorAll('.delete-btn').forEach(b=>b.addEventListener('click',function(){
-        if(confirm('Видалити?')){products=products.filter(p=>p.id!==this.dataset.id);saveProducts();showProductsView();showDashboard()}
+      document.querySelectorAll('.delete-btn').forEach(b=>b.addEventListener('click',async function(){
+        if(confirm('Видалити?')){products=products.filter(p=>p.id!==this.dataset.id);await saveProducts();showProductsView();showDashboard()}
       }));
     }
 
@@ -350,8 +374,8 @@
     document.getElementById('shopLogo').addEventListener('click',()=>{currentCategory='all';showProductsView()});
 
     updateCartCount();
-    fetchRate();
-    showProductsView();
+    fetchUsdRate();
+    loadProducts();
   </script>
 </body>
 </html>
