@@ -23,40 +23,28 @@
     .product-name{font-weight:600;font-size:1.1rem}
     .product-price{font-weight:700;font-size:1.3rem;color:#2c3e50;margin-top:0.3rem}
     .product-price-usd{font-size:0.85rem;color:#6c757d}
+    .product-sizes{font-size:0.75rem;color:#6c757d;margin-top:0.2rem}
+    .size-select{margin-top:0.4rem;padding:0.4rem;border-radius:8px;border:1px solid #dee2e6;width:100%;font-size:0.9rem}
     .add-to-cart-btn{background:#2c3e50;color:white;border:none;padding:0.6rem;border-radius:10px;cursor:pointer;font-weight:600;margin-top:0.5rem;width:100%}
+    .add-to-cart-btn:disabled{background:#adb5bd;cursor:not-allowed}
     .no-items{text-align:center;grid-column:1/-1;padding:4rem;color:#6c757d}
-
-    /* Страница товара */
-    .product-page{display:none;padding:2rem;max-width:1000px;margin:0 auto}
-    .product-page.open{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
-    .gallery{position:relative}
-    .gallery-main{width:100%;height:400px;object-fit:cover;border-radius:20px;background:#f1f3f5}
-    .gallery-nav{display:flex;gap:0.5rem;margin-top:0.8rem;justify-content:center}
-    .gallery-dot{width:10px;height:10px;border-radius:50%;background:#dee2e6;cursor:pointer;transition:0.2s}
-    .gallery-dot.active{background:#2c3e50;width:30px;border-radius:10px}
-    .gallery-arrows{position:absolute;top:50%;width:100%;display:flex;justify-content:space-between;transform:translateY(-50%);padding:0 0.5rem}
-    .gallery-arrow{background:rgba(255,255,255,0.9);border:none;width:40px;height:40px;border-radius:50%;cursor:pointer;font-size:1.2rem;font-weight:700;box-shadow:0 2px 8px rgba(0,0,0,0.1)}
-    .product-details{display:flex;flex-direction:column;gap:1rem}
-    .product-details .product-category{font-size:0.8rem}
-    .product-details .product-name{font-size:1.8rem}
-    .product-details .product-price{font-size:1.8rem}
-    .product-description{color:#6c757d;line-height:1.6;flex:1}
-    .back-btn{background:none;border:none;color:#2c3e50;cursor:pointer;font-size:1rem;font-weight:600;margin-bottom:1rem}
-
     .cart-container{display:none;padding:2rem;max-width:800px;margin:0 auto}
     .cart-container.open{display:block}
     .cart-item{display:flex;align-items:center;gap:1rem;background:white;padding:1rem;border-radius:15px;margin-bottom:1rem}
     .cart-item-img{width:80px;height:80px;object-fit:cover;border-radius:10px}
     .cart-item-info{flex:1}.cart-item-name{font-weight:600}
+    .cart-item-size{font-size:0.85rem;color:#6c757d}
     .qty-control{display:flex;align-items:center;gap:0.5rem;margin-top:0.3rem}
     .qty-btn{background:#f1f3f5;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-weight:700}
     .remove-btn{background:none;border:none;color:#e74c3c;cursor:pointer;font-size:1.2rem}
     .cart-total{text-align:right;font-size:1.4rem;font-weight:700;margin:1rem 0}
     .checkout-form{background:white;padding:2rem;border-radius:20px}
     .checkout-form input{width:100%;padding:0.8rem;margin-bottom:0.8rem;border:1px solid #dee2e6;border-radius:12px;font-size:0.95rem}
+    .checkout-form input.error{border-color:#e74c3c}
     .checkout-btn{width:100%;padding:1rem;background:#27ae60;color:white;border:none;border-radius:15px;font-weight:700;font-size:1.1rem;cursor:pointer}
     .success-msg{color:#27ae60;text-align:center;margin-top:1rem;display:none}
     .success-msg.show{display:block}
+    .error-msg{color:#e74c3c;font-size:0.85rem;margin-top:-0.5rem;margin-bottom:0.5rem;display:none}
     .admin-panel{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:100;justify-content:center;align-items:center}
     .admin-panel.open{display:flex}
     .admin-box{background:white;border-radius:24px;padding:2rem;width:95%;max-width:600px;max-height:90vh;overflow-y:auto}
@@ -69,7 +57,10 @@
     .delete-btn{background:#e74c3c;color:white;border:none;padding:0.3rem 0.8rem;border-radius:20px;cursor:pointer}
     .admin-item{display:flex;justify-content:space-between;align-items:center;padding:0.5rem 0;border-bottom:1px solid #eee}
     .divider{border-top:1px solid #eee;margin:1.2rem 0}
-    @media(max-width:768px){.product-page.open{grid-template-columns:1fr}.gallery-main{height:300px}.products-grid{padding:1rem;gap:1rem}.header{padding:0.8rem 1rem}}
+    .size-checkboxes{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:0.3rem}
+    .size-checkbox{padding:0.4rem 0.8rem;border:1px solid #dee2e6;border-radius:8px;cursor:pointer;font-size:0.85rem;background:white;transition:0.2s}
+    .size-checkbox.selected{background:#2c3e50;color:white;border-color:#2c3e50}
+    @media(max-width:768px){.products-grid{padding:1rem;gap:1rem}.header{padding:0.8rem 1rem}}
   </style>
 </head>
 <body>
@@ -88,40 +79,18 @@
   </div>
 
   <div class="products-grid" id="productsContainer"></div>
-
-  <div class="product-page" id="productPage">
-    <div>
-      <button class="back-btn" id="backBtn">← Назад</button>
-      <div class="gallery">
-        <img class="gallery-main" id="galleryMain" src="" alt="">
-        <div class="gallery-arrows">
-          <button class="gallery-arrow" id="prevImg">‹</button>
-          <button class="gallery-arrow" id="nextImg">›</button>
-        </div>
-        <div class="gallery-nav" id="galleryDots"></div>
-      </div>
-    </div>
-    <div class="product-details">
-      <span class="product-category" id="detailCategory"></span>
-      <span class="product-name" id="detailName"></span>
-      <span class="product-price" id="detailPrice"></span>
-      <p class="product-description" id="detailDescription"></p>
-      <button class="add-to-cart-btn" id="detailAddToCart">🛒 У кошик</button>
-    </div>
-  </div>
-
   <div class="cart-container" id="cartContainer">
     <h2>🛒 Ваш кошик</h2>
     <div id="cartItems"></div>
     <div class="cart-total" id="cartTotal"></div>
     <div class="checkout-form" id="checkoutForm" style="display:none;">
       <h3>📝 Оформлення замовлення</h3>
-      <input type="text" id="customerName" placeholder="Ваше ім'я та прізвище">
-      <input type="tel" id="customerPhone" placeholder="Номер телефону">
-      <input type="text" id="customerCity" placeholder="Місто">
-      <input type="text" id="customerNovaPoshta" placeholder="Номер відділення Нової Пошти">
+      <input type="text" id="customerName" placeholder="Ваше ім'я та прізвище *">
+      <input type="tel" id="customerPhone" placeholder="Номер телефону *">
+      <input type="text" id="customerCity" placeholder="Місто *">
+      <input type="text" id="customerNovaPoshta" placeholder="Номер відділення Нової Пошти *">
       <button class="checkout-btn" id="submitOrder">📦 Оформити</button>
-      <div class="success-msg" id="successMsg">✅ Відправлено!</div>
+      <div class="success-msg" id="successMsg">✅ Замовлення відправлено! Ми зв'яжемося з вами.</div>
     </div>
   </div>
 
@@ -138,6 +107,7 @@
 
     const categoryKeys = ['pants','sweaters','tshirts','dresses','suits'];
     const categoryNames = {pants:'Штани',sweaters:'Кофти',tshirts:'Футболки',dresses:'Сукні',suits:'Костюми'};
+    const allSizes = ['XXS','XS','S','M','L','XL','XXL','3XL'];
 
     let usdRate = 41.5;
     let products = [];
@@ -145,9 +115,6 @@
     let currentCategory = 'all';
     let isAdminLoggedIn = false;
     let editingProductId = null;
-    let currentView = 'products';
-    let viewingProductId = null;
-    let currentGalleryIndex = 0;
     const ADMIN = JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"login":"admin","password":"admin123"}');
 
     document.getElementById('shopLogo').textContent = SHOP_NAME;
@@ -157,21 +124,15 @@
       try {
         const r = await fetch(`${FIREBASE_URL}/products.json`);
         const data = await r.json();
-        if (data && Array.isArray(data)) {
-          products = data.filter(p => p !== null);
-        } else {
-          products = [];
-        }
-      } catch(e) {
-        products = [];
-      }
+        products = (data && Array.isArray(data)) ? data.filter(p => p !== null) : [];
+      } catch(e) { products = []; }
       if (products.length === 0) {
         products = [
-          {id:'1',name:'Класичні штани',category:'pants',price:1200,images:['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop'],description:''},
-          {id:'2',name:'В\'язана кофта',category:'sweaters',price:950,images:['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop'],description:''},
-          {id:'3',name:'Бавовняна футболка',category:'tshirts',price:450,images:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop'],description:''},
-          {id:'4',name:'Літня сукня',category:'dresses',price:1350,images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop'],description:''},
-          {id:'5',name:'Діловий костюм',category:'suits',price:4500,images:['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&h=600&fit=crop'],description:''}
+          {id:'1',name:'Класичні штани',category:'pants',price:1200,images:['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop'],description:'',sizes:['S','M','L','XL']},
+          {id:'2',name:'В\'язана кофта',category:'sweaters',price:950,images:['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop'],description:'',sizes:['M','L']},
+          {id:'3',name:'Бавовняна футболка',category:'tshirts',price:450,images:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop'],description:'',sizes:['XS','S','M','L','XL']},
+          {id:'4',name:'Літня сукня',category:'dresses',price:1350,images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop'],description:'',sizes:['S','M','L']},
+          {id:'5',name:'Діловий костюм',category:'suits',price:4500,images:['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&h=600&fit=crop'],description:'',sizes:['M','L','XL']}
         ];
         await saveProducts();
       }
@@ -180,11 +141,7 @@
 
     async function saveProducts() {
       try {
-        await fetch(`${FIREBASE_URL}/products.json`, {
-          method: 'PUT',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify(products)
-        });
+        await fetch(`${FIREBASE_URL}/products.json`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(products) });
       } catch(e) {}
     }
 
@@ -205,14 +162,11 @@
 
     function hideAll() {
       document.getElementById('productsContainer').style.display='none';
-      document.getElementById('productPage').classList.remove('open');
-      document.getElementById('productPage').style.display='none';
       document.getElementById('cartContainer').classList.remove('open');
       document.getElementById('cartContainer').style.display='none';
     }
 
     function showProductsView() {
-      currentView = 'products';
       hideAll();
       document.getElementById('productsContainer').style.display='';
       document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
@@ -221,95 +175,61 @@
       const filtered = currentCategory==='all'?products:products.filter(p=>p.category===currentCategory);
       const c = document.getElementById('productsContainer');
       if(!filtered.length){c.innerHTML='<div class="no-items">Немає товарів</div>';return}
-      c.innerHTML = filtered.map(p=>`
-        <div class="product-card" data-id="${p.id}">
-          <img src="${getMainImage(p)}" class="product-image" onerror="this.style.background='#f1f3f5'">
-          <div class="product-info">
-            <div class="product-category">${categoryNames[p.category]||p.category}</div>
-            <div class="product-name">${p.name}</div>
-            <div class="product-price">${formatPrice(p.price)}</div>
-            <button class="add-to-cart-btn quick-add" data-id="${p.id}">У кошик</button>
+      c.innerHTML = filtered.map(p=>{
+        const hasSizes = p.sizes && p.sizes.length > 0;
+        const sizesHTML = hasSizes ? `
+          <div class="product-sizes">Розміри: ${p.sizes.join(', ')}</div>
+          <select class="size-select" data-id="${p.id}">
+            <option value="">Оберіть розмір</option>
+            ${p.sizes.map(s=>`<option value="${s}">${s}</option>`).join('')}
+          </select>
+        ` : '';
+        return `
+          <div class="product-card" data-id="${p.id}">
+            <img src="${getMainImage(p)}" class="product-image" onerror="this.style.background='#f1f3f5'">
+            <div class="product-info">
+              <div class="product-category">${categoryNames[p.category]||p.category}</div>
+              <div class="product-name">${p.name}</div>
+              <div class="product-price">${formatPrice(p.price)}</div>
+              ${sizesHTML}
+              <button class="add-to-cart-btn quick-add" data-id="${p.id}" ${hasSizes?'disabled':''}>У кошик</button>
+            </div>
           </div>
-        </div>
-      `).join('');
-      // Клик по карточке — открыть товар
-      document.querySelectorAll('.product-card').forEach(card => {
-        card.addEventListener('click', function() {
-          showProductPage(this.dataset.id);
+        `;
+      }).join('');
+
+      // Включаем кнопку только когда выбран размер
+      document.querySelectorAll('.size-select').forEach(sel => {
+        sel.addEventListener('change', function() {
+          const btn = document.querySelector(`.quick-add[data-id="${this.dataset.id}"]`);
+          if (btn) btn.disabled = this.value === '';
         });
       });
-      // Кнопка "У кошик"
+
       document.querySelectorAll('.quick-add').forEach(b=>b.addEventListener('click',function(e){
         e.stopPropagation();
-        const p=products.find(x=>x.id===this.dataset.id);
+        const id = this.dataset.id;
+        const p = products.find(x=>x.id===id);
         if(!p)return;
-        const ex=cart.find(i=>i.id===p.id);
-        if(ex)ex.qty++;else cart.push({id:p.id,name:p.name,price:p.price,image:getMainImage(p),qty:1});
+        const sizeSelect = document.querySelector(`.size-select[data-id="${id}"]`);
+        const size = sizeSelect ? sizeSelect.value : '';
+        if (p.sizes && p.sizes.length > 0 && !size) {
+          alert('Будь ласка, оберіть розмір');
+          return;
+        }
+        const cartKey = size ? `${id}_${size}` : id;
+        const ex = cart.find(i=>i.cartKey===cartKey);
+        if(ex)ex.qty++;
+        else cart.push({cartKey, id:p.id, name:p.name, price:p.price, image:getMainImage(p), size, qty:1});
         localStorage.setItem('cart',JSON.stringify(cart));
         updateCartCount();
         this.textContent='✅';setTimeout(()=>{this.textContent='У кошик'},800);
+        if(sizeSelect) sizeSelect.value = '';
+        if(p.sizes && p.sizes.length > 0) this.disabled = true;
       }));
     }
 
-    function showProductPage(productId) {
-      const p = products.find(x => x.id === productId);
-      if (!p) return;
-      currentView = 'product';
-      viewingProductId = productId;
-      currentGalleryIndex = 0;
-      hideAll();
-      const page = document.getElementById('productPage');
-      page.classList.add('open');
-      page.style.display = '';
-      const images = (p.images && p.images.length > 0) ? p.images : ['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];
-      document.getElementById('detailCategory').textContent = categoryNames[p.category] || p.category;
-      document.getElementById('detailName').textContent = p.name;
-      document.getElementById('detailPrice').innerHTML = formatPrice(p.price);
-      document.getElementById('detailDescription').textContent = p.description || 'Опис відсутній';
-      document.getElementById('detailAddToCart').innerHTML = '🛒 У кошик';
-      updateGallery(images);
-      document.getElementById('prevImg').onclick = () => {
-        if (images.length <= 1) return;
-        currentGalleryIndex = (currentGalleryIndex - 1 + images.length) % images.length;
-        updateGallery(images);
-      };
-      document.getElementById('nextImg').onclick = () => {
-        if (images.length <= 1) return;
-        currentGalleryIndex = (currentGalleryIndex + 1) % images.length;
-        updateGallery(images);
-      };
-      document.getElementById('detailAddToCart').onclick = function() {
-        const ex = cart.find(i => i.id === p.id);
-        if (ex) ex.qty++;
-        else cart.push({id:p.id, name:p.name, price:p.price, image:getMainImage(p), qty:1});
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        this.innerHTML = '✅';
-        setTimeout(() => { this.innerHTML = '🛒 У кошик'; }, 800);
-      };
-      document.getElementById('backBtn').onclick = showProductsView;
-    }
-
-    function updateGallery(images) {
-      document.getElementById('galleryMain').src = images[currentGalleryIndex];
-      document.getElementById('galleryMain').onerror = function() {
-        this.src = 'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22%3E%3Crect fill=%22%23f1f3f5%22 width=%22100%22 height=%22100%22/%3E%3C/svg%3E';
-      };
-      const dots = document.getElementById('galleryDots');
-      if (images.length <= 1) { dots.innerHTML = ''; return; }
-      dots.innerHTML = images.map((_, i) => 
-        `<div class="gallery-dot ${i === currentGalleryIndex ? 'active' : ''}" data-index="${i}"></div>`
-      ).join('');
-      document.querySelectorAll('.gallery-dot').forEach(d => {
-        d.addEventListener('click', function() {
-          currentGalleryIndex = parseInt(this.dataset.index);
-          updateGallery(images);
-        });
-      });
-    }
-
     function showCartView() {
-      currentView = 'cart';
       hideAll();
       document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
       document.getElementById('cartContainer').classList.add('open');
@@ -331,11 +251,12 @@
             <img src="${i.image}" class="cart-item-img" onerror="this.style.background='#f1f3f5'">
             <div class="cart-item-info">
               <div class="cart-item-name">${i.name}</div>
+              ${i.size?`<div class="cart-item-size">Розмір: ${i.size}</div>`:''}
               <div class="qty-control">
-                <button class="qty-btn minus" data-id="${i.id}">−</button><span>${i.qty}</span><button class="qty-btn plus" data-id="${i.id}">+</button>
+                <button class="qty-btn minus" data-cartkey="${i.cartKey}">−</button><span>${i.qty}</span><button class="qty-btn plus" data-cartkey="${i.cartKey}">+</button>
               </div>
             </div>
-            <button class="remove-btn" data-id="${i.id}">✕</button>
+            <button class="remove-btn" data-cartkey="${i.cartKey}">✕</button>
           </div>
         `).join('');
         const tu=cart.reduce((s,i)=>s+i.price*i.qty,0);
@@ -343,16 +264,16 @@
         form.style.display='block';
       }
       document.querySelectorAll('.qty-btn.minus').forEach(b=>b.addEventListener('click',function(){
-        const i=cart.find(x=>x.id===this.dataset.id);
-        if(i&&i.qty>1)i.qty--;else cart=cart.filter(x=>x.id!==this.dataset.id);
+        const i=cart.find(x=>x.cartKey===this.dataset.cartkey);
+        if(i&&i.qty>1)i.qty--;else cart=cart.filter(x=>x.cartKey!==this.dataset.cartkey);
         localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart();
       }));
       document.querySelectorAll('.qty-btn.plus').forEach(b=>b.addEventListener('click',function(){
-        const i=cart.find(x=>x.id===this.dataset.id);
+        const i=cart.find(x=>x.cartKey===this.dataset.cartkey);
         if(i)i.qty++;localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart();
       }));
       document.querySelectorAll('.remove-btn').forEach(b=>b.addEventListener('click',function(){
-        cart=cart.filter(x=>x.id!==this.dataset.id);
+        cart=cart.filter(x=>x.cartKey!==this.dataset.cartkey);
         localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart();
       }));
     }
@@ -366,30 +287,51 @@
       } catch(e) {}
     }
 
+    function validateOrderForm() {
+      const name = document.getElementById('customerName');
+      const phone = document.getElementById('customerPhone');
+      const city = document.getElementById('customerCity');
+      const np = document.getElementById('customerNovaPoshta');
+      let valid = true;
+      [name, phone, city, np].forEach(field => {
+        if (!field.value.trim()) {
+          field.classList.add('error');
+          valid = false;
+        } else {
+          field.classList.remove('error');
+        }
+      });
+      return valid;
+    }
+
     document.getElementById('submitOrder').addEventListener('click',async function(){
+      if (!validateOrderForm()) {
+        alert('Будь ласка, заповніть усі поля');
+        return;
+      }
       const name=document.getElementById('customerName').value.trim();
       const phone=document.getElementById('customerPhone').value.trim();
       const city=document.getElementById('customerCity').value.trim();
       const np=document.getElementById('customerNovaPoshta').value.trim();
-      if(!name||!phone){alert('Заповніть ім\'я та телефон');return}
-      let text=`🛒 <b>Нове замовлення</b> з ${SHOP_NAME}\n\n👤 <b>Ім'я:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n🏙 <b>Місто:</b> ${city||'-'}\n📦 <b>НП:</b> ${np||'-'}\n\n📦 <b>Товари:</b>\n`;
-      cart.forEach(i=>{text+=`- ${i.name} x${i.qty} = ${i.price.toLocaleString('uk-UA')} ₴\n`});
+      let text=`🛒 <b>Нове замовлення</b> з ${SHOP_NAME}\n\n👤 <b>Ім'я:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n🏙 <b>Місто:</b> ${city}\n📦 <b>НП:</b> ${np}\n\n📦 <b>Товари:</b>\n`;
+      cart.forEach(i=>{
+        text+=`- ${i.name}${i.size?' (розмір '+i.size+')':''} x${i.qty} = ${i.price.toLocaleString('uk-UA')} ₴\n`;
+      });
       const tu=cart.reduce((s,i)=>s+i.price*i.qty,0);
       text+=`\n💰 <b>Разом:</b> ${tu.toLocaleString('uk-UA')} ₴ (~${(tu/usdRate).toFixed(0)} $)`;
       await sendToTelegram(text);
       document.getElementById('successMsg').classList.add('show');
       cart=[];localStorage.setItem('cart','[]');updateCartCount();
-      document.getElementById('customerName').value='';
-      document.getElementById('customerPhone').value='';
-      document.getElementById('customerCity').value='';
-      document.getElementById('customerNovaPoshta').value='';
+      ['customerName','customerPhone','customerCity','customerNovaPoshta'].forEach(id=>{
+        document.getElementById(id).value='';
+        document.getElementById(id).classList.remove('error');
+      });
       setTimeout(()=>{document.getElementById('successMsg').classList.remove('show');renderCart()},3000);
     });
 
     document.getElementById('cartBtn').addEventListener('click',showCartView);
     document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',function(){currentCategory=this.dataset.category;showProductsView()}));
 
-    // Админка
     const adminPanel=document.getElementById('adminPanel');
     const adminContent=document.getElementById('adminContent');
 
@@ -411,10 +353,13 @@
       document.getElementById('closeBtn').addEventListener('click',closeAdmin);
     }
 
+    let selectedSizes = [];
+
     function showDashboard(){
       const catOpts=categoryKeys.map(c=>`<option value="${c}">${categoryNames[c]}</option>`).join('');
       const isEdit=editingProductId!==null;
       const ep=isEdit?products.find(p=>p.id===editingProductId):null;
+      selectedSizes = (ep&&ep.sizes) ? [...ep.sizes] : [];
       adminContent.innerHTML=`
         <h2>📦 Управління</h2>
         <p>Назва: <strong>${SHOP_NAME}</strong></p>
@@ -427,8 +372,17 @@
         <div class="form-group"><label>Назва</label><input type="text" id="pn" value="${isEdit?ep.name:''}"></div>
         <div class="form-group"><label>Категорія</label><select id="pc">${catOpts}</select></div>
         <div class="form-group"><label>Ціна (₴)</label><input type="number" id="pp" value="${isEdit?ep.price:''}"></div>
-        <div class="form-group"><label>URL фото (через кому)</label><input type="text" id="pi" value="${isEdit?ep.images.join(', '):''}"></div>
+        <div class="form-group"><label>URL фото</label><input type="text" id="pi" value="${isEdit?ep.images.join(', '):''}"></div>
         <div class="form-group"><label>Опис</label><textarea id="pd">${isEdit?ep.description:''}</textarea></div>
+        <div class="form-group">
+          <label>Розміри</label>
+          <div class="size-checkboxes" id="sizeCheckboxes">
+            ${allSizes.map(s=>`
+              <div class="size-checkbox ${selectedSizes.includes(s)?'selected':''}" data-size="${s}">${s}</div>
+            `).join('')}
+          </div>
+          <small>Натисніть на розміри, які доступні</small>
+        </div>
         <button class="btn" id="saveProd">${isEdit?'Оновити':'Додати'}</button>
         ${isEdit?'<button class="btn btn-outline" id="cancelEdit">Скасувати</button>':''}
         <button class="btn btn-outline" id="logout">Вийти</button>
@@ -436,6 +390,20 @@
       `;
       if(isEdit)document.getElementById('pc').value=ep.category;
       renderAdminList();
+
+      document.querySelectorAll('.size-checkbox').forEach(cb => {
+        cb.addEventListener('click', function() {
+          const size = this.dataset.size;
+          if (selectedSizes.includes(size)) {
+            selectedSizes = selectedSizes.filter(s=>s!==size);
+            this.classList.remove('selected');
+          } else {
+            selectedSizes.push(size);
+            this.classList.add('selected');
+          }
+        });
+      });
+
       document.getElementById('saveCreds').addEventListener('click',()=>{
         const nl=document.getElementById('nl').value.trim();
         const np=document.getElementById('np').value.trim();
@@ -450,10 +418,10 @@
         const price=+document.getElementById('pp').value;
         const imgs=document.getElementById('pi').value.trim();
         const desc=document.getElementById('pd').value.trim();
-        if(!name||!price){alert('Заповніть');return}
+        if(!name||!price){alert('Заповніть назву та ціну');return}
         const images=imgs?imgs.split(',').map(s=>s.trim()).filter(s=>s).slice(0,5):['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];
-        if(isEdit){const idx=products.findIndex(p=>p.id===editingProductId);if(idx!==-1)products[idx]={...products[idx],name,category:cat,price,images,description:desc};editingProductId=null}
-        else products.push({id:Date.now().toString(),name,category:cat,price,images,description:desc});
+        if(isEdit){const idx=products.findIndex(p=>p.id===editingProductId);if(idx!==-1)products[idx]={...products[idx],name,category:cat,price,images,description:desc,sizes:selectedSizes};editingProductId=null}
+        else products.push({id:Date.now().toString(),name,category:cat,price,images,description:desc,sizes:selectedSizes});
         await saveProducts();
         showProductsView();
         showDashboard();
@@ -467,7 +435,7 @@
       if(!lc)return;
       lc.innerHTML=products.map(p=>`
         <div class="admin-item">
-          <div><strong>${p.name}</strong> [${categoryNames[p.category]}] - ${p.price} ₴</div>
+          <div><strong>${p.name}</strong> [${categoryNames[p.category]}] - ${p.price} ₴${p.sizes&&p.sizes.length?' | Розміри: '+p.sizes.join(', '):''}</div>
           <div><button class="btn-edit" data-id="${p.id}">✏️</button><button class="delete-btn" data-id="${p.id}">🗑</button></div>
         </div>
       `).join('');
