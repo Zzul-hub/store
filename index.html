@@ -25,10 +25,7 @@
     .product-price-usd{font-size:0.85rem;color:#6c757d}
     .product-sizes{font-size:0.75rem;color:#6c757d;margin-top:0.2rem}
     .add-to-cart-btn{background:#2c3e50;color:white;border:none;padding:0.6rem;border-radius:10px;cursor:pointer;font-weight:600;margin-top:0.5rem;width:100%}
-    .add-to-cart-btn:disabled{background:#adb5bd;cursor:not-allowed}
     .no-items{text-align:center;grid-column:1/-1;padding:4rem;color:#6c757d}
-
-    /* Страница товара */
     .product-page{display:none;padding:2rem;max-width:1000px;margin:0 auto}
     .product-page.open{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
     .gallery{position:relative}
@@ -42,11 +39,9 @@
     .product-details .product-category{font-size:0.8rem}
     .product-details .product-name{font-size:1.8rem}
     .product-details .product-price{font-size:1.8rem}
-    .product-details .product-sizes{font-size:0.9rem}
     .product-description{color:#6c757d;line-height:1.6;flex:1}
-    .back-btn{background:none;border:none;color:#2c3e50;cursor:pointer;font-size:1rem;font-weight:600;margin-bottom:1rem;display:inline-block}
-    .size-select{margin-top:0.4rem;padding:0.5rem;border-radius:8px;border:1px solid #dee2e6;width:100%;font-size:0.95rem}
-
+    .back-btn{background:none;border:none;color:#2c3e50;cursor:pointer;font-size:1rem;font-weight:600;margin-bottom:1rem}
+    .size-select{margin-top:0.5rem;padding:0.5rem;border-radius:8px;border:1px solid #dee2e6;width:100%;font-size:0.95rem}
     .cart-container{display:none;padding:2rem;max-width:800px;margin:0 auto}
     .cart-container.open{display:block}
     .cart-item{display:flex;align-items:center;gap:1rem;background:white;padding:1rem;border-radius:15px;margin-bottom:1rem}
@@ -86,7 +81,6 @@
     <div class="logo" id="shopLogo">Artists.proof#225</div>
     <button class="cart-icon" id="cartBtn">🛒 Кошик <span class="cart-count" id="cartCount">0</span></button>
   </header>
-
   <div class="tabs" id="tabsContainer">
     <button class="tab active" data-category="all">Все</button>
     <button class="tab" data-category="pants">Штани</button>
@@ -95,154 +89,77 @@
     <button class="tab" data-category="dresses">Сукні</button>
     <button class="tab" data-category="suits">Костюми</button>
   </div>
-
   <div class="products-grid" id="productsContainer"></div>
   <div class="product-page" id="productPage">
-    <div>
-      <button class="back-btn" id="backBtn">← Назад</button>
-      <div class="gallery">
-        <img class="gallery-main" id="galleryMain" src="" alt="">
-        <div class="gallery-arrows"><button class="gallery-arrow" id="prevImg">‹</button><button class="gallery-arrow" id="nextImg">›</button></div>
-        <div class="gallery-nav" id="galleryDots"></div>
-      </div>
+    <div><button class="back-btn" id="backBtn">← Назад</button>
+      <div class="gallery"><img class="gallery-main" id="galleryMain" src=""><div class="gallery-arrows"><button class="gallery-arrow" id="prevImg">‹</button><button class="gallery-arrow" id="nextImg">›</button></div><div class="gallery-nav" id="galleryDots"></div></div>
     </div>
-    <div class="product-details">
-      <span class="product-category" id="detailCategory"></span>
-      <span class="product-name" id="detailName"></span>
-      <span class="product-price" id="detailPrice"></span>
-      <span class="product-sizes" id="detailSizes"></span>
-      <select class="size-select" id="detailSizeSelect" style="display:none;"><option value="">Оберіть розмір</option></select>
-      <p class="product-description" id="detailDescription"></p>
-      <button class="add-to-cart-btn" id="detailAddToCart" style="margin-top:auto;">🛒 У кошик</button>
-    </div>
+    <div class="product-details"><span class="product-category" id="detailCategory"></span><span class="product-name" id="detailName"></span><span class="product-price" id="detailPrice"></span><span class="product-sizes" id="detailSizes"></span><select class="size-select" id="detailSizeSelect" style="display:none"><option value="">Оберіть розмір</option></select><p class="product-description" id="detailDescription"></p><button class="add-to-cart-btn" id="detailAddToCart">🛒 У кошик</button></div>
   </div>
   <div class="cart-container" id="cartContainer">
-    <h2>🛒 Ваш кошик</h2>
-    <div id="cartItems"></div>
-    <div class="cart-total" id="cartTotal"></div>
-    <div class="checkout-form" id="checkoutForm" style="display:none;">
-      <h3>📝 Оформлення замовлення</h3>
-      <input type="text" id="customerName" placeholder="Ваше ім'я та прізвище *">
-      <input type="tel" id="customerPhone" placeholder="Номер телефону *">
-      <input type="text" id="customerCity" placeholder="Місто *">
-      <input type="text" id="customerNovaPoshta" placeholder="Номер відділення Нової Пошти *">
-      <button class="checkout-btn" id="submitOrder">📦 Оформити</button>
-      <div class="success-msg" id="successMsg">✅ Замовлення відправлено!</div>
-    </div>
+    <h2>🛒 Ваш кошик</h2><div id="cartItems"></div><div class="cart-total" id="cartTotal"></div>
+    <div class="checkout-form" id="checkoutForm" style="display:none"><h3>📝 Оформлення замовлення</h3><input type="text" id="customerName" placeholder="Ваше ім'я та прізвище *"><input type="tel" id="customerPhone" placeholder="Номер телефону *"><input type="text" id="customerCity" placeholder="Місто *"><input type="text" id="customerNovaPoshta" placeholder="Номер відділення Нової Пошти *"><button class="checkout-btn" id="submitOrder">📦 Оформити</button><div class="success-msg" id="successMsg">✅ Замовлення відправлено!</div></div>
   </div>
-
-  <div class="admin-panel" id="adminPanel">
-    <div class="admin-box" id="adminContent"></div>
-  </div>
+  <div class="admin-panel" id="adminPanel"><div class="admin-box" id="adminContent"></div></div>
 
   <script>
-    const TOKEN = "8990569855:AAGFLxCYiE4h1nQHBVs0Ctbl2u0I-uC4-Dw";
-    const CHAT_ID = "1004246156";
-    const FIREBASE_URL = "https://artistsproof225-26189-default-rtdb.firebaseio.com";
-    const SHOP_NAME = "Artists.proof#225";
-    const ADMIN_KEY = "admin_creds";
+    const TOKEN="8990569855:AAGFLxCYiE4h1nQHBVs0Ctbl2u0I-uC4-Dw",CHAT_ID="1004246156",FIREBASE_URL="https://artistsproof225-26189-default-rtdb.firebaseio.com",SHOP_NAME="Artists.proof#225",ADMIN_KEY="admin_creds";
+    const categoryKeys=['pants','sweaters','tshirts','dresses','suits'],categoryNames={pants:'Штани',sweaters:'Кофти',tshirts:'Футболки',dresses:'Сукні',suits:'Костюми'},allSizes=['XXS','XS','S','M','L','XL','XXL','3XL'];
+    let usdRate=41.5,products=[],cart=JSON.parse(localStorage.getItem('cart')||'[]'),currentCategory='all',isAdminLoggedIn=false,editingProductId=null,currentView='products',viewingProductId=null,currentGalleryIndex=0;
+    const ADMIN=JSON.parse(localStorage.getItem(ADMIN_KEY)||'{"login":"admin","password":"admin123"}');
+    document.getElementById('shopLogo').textContent=SHOP_NAME;document.title=SHOP_NAME;
 
-    const categoryKeys = ['pants','sweaters','tshirts','dresses','suits'];
-    const categoryNames = {pants:'Штани',sweaters:'Кофти',tshirts:'Футболки',dresses:'Сукні',suits:'Костюми'};
-    const allSizes = ['XXS','XS','S','M','L','XL','XXL','3XL'];
-
-    let usdRate = 41.5;
-    let products = [];
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    let currentCategory = 'all';
-    let isAdminLoggedIn = false;
-    let editingProductId = null;
-    let currentView = 'products';
-    let viewingProductId = null;
-    let currentGalleryIndex = 0;
-    const ADMIN = JSON.parse(localStorage.getItem(ADMIN_KEY) || '{"login":"admin","password":"admin123"}');
-
-    document.getElementById('shopLogo').textContent = SHOP_NAME;
-    document.title = SHOP_NAME;
-
-    async function loadProducts() {
-      try {
-        const r = await fetch(`${FIREBASE_URL}/products.json`);
-        const data = await r.json();
-        products = (data && Array.isArray(data)) ? data.filter(p => p !== null) : [];
-      } catch(e) { products = []; }
-      if (products.length === 0) {
-        products = [
-          {id:'1',name:'Класичні штани',category:'pants',price:1200,images:['https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=600&fit=crop'],description:'Елегантні класичні штани.',sizes:['S','M','L','XL']},
-          {id:'2',name:'В\'язана кофта',category:'sweaters',price:950,images:['https://images.unsplash.com/photo-1576566588028-4147f3842f27?w=600&h=600&fit=crop'],description:'Тепла кофта.',sizes:['M','L']},
-          {id:'3',name:'Бавовняна футболка',category:'tshirts',price:450,images:['https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600&h=600&fit=crop'],description:'Базова футболка.',sizes:['XS','S','M','L','XL']},
-          {id:'4',name:'Літня сукня',category:'dresses',price:1350,images:['https://images.unsplash.com/photo-1595777457583-95e059d581b8?w=600&h=600&fit=crop'],description:'Легка сукня.',sizes:['S','M','L']},
-          {id:'5',name:'Діловий костюм',category:'suits',price:4500,images:['https://images.unsplash.com/photo-1593030761757-71fae45fa0e7?w=600&h=600&fit=crop'],description:'Діловий костюм.',sizes:['M','L','XL']}
-        ];
-        await saveProducts();
-      }
+    async function loadProducts(){
+      try{
+        const r=await fetch(`${FIREBASE_URL}/products.json`);
+        const data=await r.json();
+        if(Array.isArray(data)){products=data.filter(p=>p!==null)}
+        else{products=[]}
+      }catch(e){products=[]}
       showProductsView();
     }
 
-    async function saveProducts() {
-      try { await fetch(`${FIREBASE_URL}/products.json`, { method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(products) }); } catch(e) {}
-    }
+    async function saveProducts(){try{await fetch(`${FIREBASE_URL}/products.json`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(products)})}catch(e){}}
 
-    async function fetchUsdRate() {
-      try { const r = await fetch('https://api.exchangerate-api.com/v4/latest/UAH'); const d = await r.json(); if(d&&d.rates&&d.rates.USD) usdRate = 1/d.rates.USD; } catch(e) {}
-    }
+    async function fetchUsdRate(){try{const r=await fetch('https://api.exchangerate-api.com/v4/latest/UAH');const d=await r.json();if(d&&d.rates&&d.rates.USD)usdRate=1/d.rates.USD}catch(e){}}
 
-    function formatPrice(uah) { return `${uah.toLocaleString('uk-UA')} ₴ <span class="product-price-usd">(~${(uah/usdRate).toFixed(0)} $)</span>`; }
-    function getMainImage(p) { return (p.images&&p.images[0])||'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'; }
-    function updateCartCount() { document.getElementById('cartCount').textContent = cart.reduce((s,i)=>s+i.qty,0); }
+    function formatPrice(uah){return`${uah.toLocaleString('uk-UA')} ₴ <span class="product-price-usd">(~${(uah/usdRate).toFixed(0)} $)</span>`}
+    function getMainImage(p){return(p.images&&p.images[0])||'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'}
+    function updateCartCount(){document.getElementById('cartCount').textContent=cart.reduce((s,i)=>s+i.qty,0)}
+    function hideAll(){document.getElementById('productsContainer').style.display='none';document.getElementById('productPage').classList.remove('open');document.getElementById('productPage').style.display='none';document.getElementById('cartContainer').classList.remove('open');document.getElementById('cartContainer').style.display='none'}
 
-    function hideAll() {
-      document.getElementById('productsContainer').style.display='none';
-      document.getElementById('productPage').classList.remove('open'); document.getElementById('productPage').style.display='none';
-      document.getElementById('cartContainer').classList.remove('open'); document.getElementById('cartContainer').style.display='none';
-    }
-
-    function showProductsView() {
-      currentView='products'; viewingProductId=null;
-      hideAll(); document.getElementById('productsContainer').style.display='';
+    function showProductsView(){
+      currentView='products';viewingProductId=null;hideAll();document.getElementById('productsContainer').style.display='';
       document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-      const at = document.querySelector(`.tab[data-category="${currentCategory}"]`); if(at) at.classList.add('active');
-      const filtered = currentCategory==='all'?products:products.filter(p=>p.category===currentCategory);
-      const c = document.getElementById('productsContainer');
+      const at=document.querySelector(`.tab[data-category="${currentCategory}"]`);if(at)at.classList.add('active');
+      const filtered=currentCategory==='all'?products:products.filter(p=>p.category===currentCategory);
+      const c=document.getElementById('productsContainer');
       if(!filtered.length){c.innerHTML='<div class="no-items">Немає товарів</div>';return}
-      c.innerHTML = filtered.map(p=>`
-        <div class="product-card" data-id="${p.id}">
-          <img src="${getMainImage(p)}" class="product-image" onerror="this.style.background='#f1f3f5'">
-          <div class="product-info">
-            <div class="product-category">${categoryNames[p.category]||p.category}</div>
-            <div class="product-name">${p.name}</div>
-            <div class="product-price">${formatPrice(p.price)}</div>
-            ${p.sizes&&p.sizes.length?`<div class="product-sizes">Розміри: ${p.sizes.join(', ')}</div>`:''}
-            <button class="add-to-cart-btn quick-add" data-id="${p.id}">У кошик</button>
-          </div>
-        </div>
-      `).join('');
+      c.innerHTML=filtered.map(p=>`<div class="product-card" data-id="${p.id}"><img src="${getMainImage(p)}" class="product-image" onerror="this.style.background='#f1f3f5'"><div class="product-info"><div class="product-category">${categoryNames[p.category]||p.category}</div><div class="product-name">${p.name}</div><div class="product-price">${formatPrice(p.price)}</div>${p.sizes&&p.sizes.length?`<div class="product-sizes">Розміри: ${p.sizes.join(', ')}</div>`:''}<button class="add-to-cart-btn quick-add" data-id="${p.id}">У кошик</button></div></div>`).join('');
       document.querySelectorAll('.product-card').forEach(card=>{card.addEventListener('click',function(e){if(e.target.classList.contains('quick-add'))return;showProductPage(this.dataset.id)})});
       document.querySelectorAll('.quick-add').forEach(b=>b.addEventListener('click',function(e){e.stopPropagation();const p=products.find(x=>x.id===this.dataset.id);if(!p)return;addToCartSimple(p);this.textContent='✅';setTimeout(()=>{this.textContent='У кошик'},800)}));
     }
 
     function addToCartSimple(p){const ex=cart.find(i=>i.id===p.id&&!i.size);if(ex)ex.qty++;else cart.push({cartKey:p.id,id:p.id,name:p.name,price:p.price,image:getMainImage(p),size:'',qty:1});localStorage.setItem('cart',JSON.stringify(cart));updateCartCount()}
 
-    function showProductPage(productId) {
-      const p = products.find(x=>x.id===productId); if(!p) return;
-      currentView='product'; viewingProductId=productId; currentGalleryIndex=0;
-      hideAll();
-      document.getElementById('productPage').classList.add('open'); document.getElementById('productPage').style.display='';
-      const images = (p.images&&p.images.length)?p.images:['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];
+    function showProductPage(productId){
+      const p=products.find(x=>x.id===productId);if(!p)return;
+      currentView='product';viewingProductId=productId;currentGalleryIndex=0;hideAll();
+      document.getElementById('productPage').classList.add('open');document.getElementById('productPage').style.display='';
+      const images=(p.images&&p.images.length)?p.images:['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];
       document.getElementById('detailCategory').textContent=categoryNames[p.category]||p.category;
       document.getElementById('detailName').textContent=p.name;
       document.getElementById('detailPrice').innerHTML=formatPrice(p.price);
       document.getElementById('detailDescription').textContent=p.description||'Опис відсутній';
-      const sizesDiv = document.getElementById('detailSizes');
-      const sizeSelect = document.getElementById('detailSizeSelect');
+      const sizesDiv=document.getElementById('detailSizes'),sizeSelect=document.getElementById('detailSizeSelect');
       if(p.sizes&&p.sizes.length){sizesDiv.textContent='Розміри: '+p.sizes.join(', ');sizeSelect.style.display='';sizeSelect.innerHTML='<option value="">Оберіть розмір</option>'+p.sizes.map(s=>`<option value="${s}">${s}</option>`).join('')}else{sizesDiv.textContent='';sizeSelect.style.display='none'}
       updateGallery(images);
       document.getElementById('prevImg').onclick=()=>{if(images.length<=1)return;currentGalleryIndex=(currentGalleryIndex-1+images.length)%images.length;updateGallery(images)};
       document.getElementById('nextImg').onclick=()=>{if(images.length<=1)return;currentGalleryIndex=(currentGalleryIndex+1)%images.length;updateGallery(images)};
       document.getElementById('detailAddToCart').onclick=function(){
-        const size = sizeSelect.style.display!=='none'?sizeSelect.value:'';
+        const size=sizeSelect.style.display!=='none'?sizeSelect.value:'';
         if(p.sizes&&p.sizes.length&&!size){alert('Оберіть розмір');return}
-        const cartKey = size?`${p.id}_${size}`:p.id;
+        const cartKey=size?`${p.id}_${size}`:p.id;
         const ex=cart.find(i=>i.cartKey===cartKey);
         if(ex)ex.qty++;else cart.push({cartKey,id:p.id,name:p.name,price:p.price,image:getMainImage(p),size,qty:1});
         localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();
@@ -251,41 +168,17 @@
       document.getElementById('backBtn').onclick=showProductsView;
     }
 
-    function updateGallery(images){
-      document.getElementById('galleryMain').src=images[currentGalleryIndex];
-      const dots=document.getElementById('galleryDots');
-      if(images.length<=1){dots.innerHTML='';return}
-      dots.innerHTML=images.map((_,i)=>`<div class="gallery-dot ${i===currentGalleryIndex?'active':''}" data-index="${i}"></div>`).join('');
-      document.querySelectorAll('.gallery-dot').forEach(d=>d.addEventListener('click',function(){currentGalleryIndex=parseInt(this.dataset.index);updateGallery(images)}));
-    }
+    function updateGallery(images){document.getElementById('galleryMain').src=images[currentGalleryIndex];const dots=document.getElementById('galleryDots');if(images.length<=1){dots.innerHTML='';return}dots.innerHTML=images.map((_,i)=>`<div class="gallery-dot ${i===currentGalleryIndex?'active':''}" data-index="${i}"></div>`).join('');document.querySelectorAll('.gallery-dot').forEach(d=>d.addEventListener('click',function(){currentGalleryIndex=parseInt(this.dataset.index);updateGallery(images)}))}
 
     function showCartView(){currentView='cart';hideAll();document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.getElementById('cartContainer').classList.add('open');document.getElementById('cartContainer').style.display='block';renderCart()}
 
-    function renderCart(){
-      const items=document.getElementById('cartItems'),total=document.getElementById('cartTotal'),form=document.getElementById('checkoutForm');
-      document.getElementById('successMsg').classList.remove('show');
-      if(!cart.length){items.innerHTML='<p style="text-align:center;padding:2rem;">Кошик порожній</p>';total.innerHTML='';form.style.display='none'}
-      else{items.innerHTML=cart.map(i=>`<div class="cart-item"><img src="${i.image}" class="cart-item-img" onerror="this.style.background='#f1f3f5'"><div class="cart-item-info"><div class="cart-item-name">${i.name}</div>${i.size?`<div class="cart-item-size">Розмір: ${i.size}</div>`:''}<div class="qty-control"><button class="qty-btn minus" data-cartkey="${i.cartKey}">−</button><span>${i.qty}</span><button class="qty-btn plus" data-cartkey="${i.cartKey}">+</button></div></div><button class="remove-btn" data-cartkey="${i.cartKey}">✕</button></div>`).join('');total.innerHTML=`<strong>Разом:</strong> ${formatPrice(cart.reduce((s,i)=>s+i.price*i.qty,0))}`;form.style.display='block'}
-      document.querySelectorAll('.qty-btn.minus').forEach(b=>b.addEventListener('click',function(){const i=cart.find(x=>x.cartKey===this.dataset.cartkey);if(i&&i.qty>1)i.qty--;else cart=cart.filter(x=>x.cartKey!==this.dataset.cartkey);localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart()}));
-      document.querySelectorAll('.qty-btn.plus').forEach(b=>b.addEventListener('click',function(){const i=cart.find(x=>x.cartKey===this.dataset.cartkey);if(i)i.qty++;localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart()}));
-      document.querySelectorAll('.remove-btn').forEach(b=>b.addEventListener('click',function(){cart=cart.filter(x=>x.cartKey!==this.dataset.cartkey);localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart()}));
-    }
+    function renderCart(){const items=document.getElementById('cartItems'),total=document.getElementById('cartTotal'),form=document.getElementById('checkoutForm');document.getElementById('successMsg').classList.remove('show');if(!cart.length){items.innerHTML='<p style="text-align:center;padding:2rem;">Кошик порожній</p>';total.innerHTML='';form.style.display='none'}else{items.innerHTML=cart.map(i=>`<div class="cart-item"><img src="${i.image}" class="cart-item-img" onerror="this.style.background='#f1f3f5'"><div class="cart-item-info"><div class="cart-item-name">${i.name}</div>${i.size?`<div class="cart-item-size">Розмір: ${i.size}</div>`:''}<div class="qty-control"><button class="qty-btn minus" data-cartkey="${i.cartKey}">−</button><span>${i.qty}</span><button class="qty-btn plus" data-cartkey="${i.cartKey}">+</button></div></div><button class="remove-btn" data-cartkey="${i.cartKey}">✕</button></div>`).join('');total.innerHTML=`<strong>Разом:</strong> ${formatPrice(cart.reduce((s,i)=>s+i.price*i.qty,0))}`;form.style.display='block'}document.querySelectorAll('.qty-btn.minus').forEach(b=>b.addEventListener('click',function(){const i=cart.find(x=>x.cartKey===this.dataset.cartkey);if(i&&i.qty>1)i.qty--;else cart=cart.filter(x=>x.cartKey!==this.dataset.cartkey);localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart()}));document.querySelectorAll('.qty-btn.plus').forEach(b=>b.addEventListener('click',function(){const i=cart.find(x=>x.cartKey===this.dataset.cartkey);if(i)i.qty++;localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart()}));document.querySelectorAll('.remove-btn').forEach(b=>b.addEventListener('click',function(){cart=cart.filter(x=>x.cartKey!==this.dataset.cartkey);localStorage.setItem('cart',JSON.stringify(cart));updateCartCount();renderCart()}))}
 
     async function sendToTelegram(text){try{await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CHAT_ID,text:text,parse_mode:'HTML'})})}catch(e){}}
 
-    function validateOrderForm(){const fields=['customerName','customerPhone','customerCity','customerNovaPoshta'];let valid=true;fields.forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('error');valid=false}else el.classList.remove('error')});return valid}
+    function validateOrderForm(){const f=['customerName','customerPhone','customerCity','customerNovaPoshta'];let v=true;f.forEach(id=>{const el=document.getElementById(id);if(!el.value.trim()){el.classList.add('error');v=false}else el.classList.remove('error')});return v}
 
-    document.getElementById('submitOrder').addEventListener('click',async function(){
-      if(!validateOrderForm()){alert('Заповніть усі поля');return}
-      const name=document.getElementById('customerName').value.trim(),phone=document.getElementById('customerPhone').value.trim(),city=document.getElementById('customerCity').value.trim(),np=document.getElementById('customerNovaPoshta').value.trim();
-      let text=`🛒 <b>Нове замовлення</b> з ${SHOP_NAME}\n\n👤 <b>Ім'я:</b> ${name}\n📞 <b>Телефон:</b> ${phone}\n🏙 <b>Місто:</b> ${city}\n📦 <b>НП:</b> ${np}\n\n📦 <b>Товари:</b>\n`;
-      cart.forEach(i=>{text+=`- ${i.name}${i.size?' (розмір '+i.size+')':''} x${i.qty} = ${i.price.toLocaleString('uk-UA')} ₴\n`});
-      text+=`\n💰 <b>Разом:</b> ${cart.reduce((s,i)=>s+i.price*i.qty,0).toLocaleString('uk-UA')} ₴ (~${(cart.reduce((s,i)=>s+i.price*i.qty,0)/usdRate).toFixed(0)} $)`;
-      await sendToTelegram(text);
-      document.getElementById('successMsg').classList.add('show');cart=[];localStorage.setItem('cart','[]');updateCartCount();
-      ['customerName','customerPhone','customerCity','customerNovaPoshta'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.remove('error')});
-      setTimeout(()=>{document.getElementById('successMsg').classList.remove('show');renderCart()},3000);
-    });
+    document.getElementById('submitOrder').addEventListener('click',async function(){if(!validateOrderForm()){alert('Заповніть усі поля');return}const n=document.getElementById('customerName').value.trim(),ph=document.getElementById('customerPhone').value.trim(),c=document.getElementById('customerCity').value.trim(),np=document.getElementById('customerNovaPoshta').value.trim();let t=`🛒 <b>Нове замовлення</b> з ${SHOP_NAME}\n\n👤 <b>Ім'я:</b> ${n}\n📞 <b>Телефон:</b> ${ph}\n🏙 <b>Місто:</b> ${c}\n📦 <b>НП:</b> ${np}\n\n📦 <b>Товари:</b>\n`;cart.forEach(i=>{t+=`- ${i.name}${i.size?' (розмір '+i.size+')':''} x${i.qty} = ${i.price.toLocaleString('uk-UA')} ₴\n`});const tu=cart.reduce((s,i)=>s+i.price*i.qty,0);t+=`\n💰 <b>Разом:</b> ${tu.toLocaleString('uk-UA')} ₴ (~${(tu/usdRate).toFixed(0)} $)`;await sendToTelegram(t);document.getElementById('successMsg').classList.add('show');cart=[];localStorage.setItem('cart','[]');updateCartCount();['customerName','customerPhone','customerCity','customerNovaPoshta'].forEach(id=>{document.getElementById(id).value='';document.getElementById(id).classList.remove('error')});setTimeout(()=>{document.getElementById('successMsg').classList.remove('show');renderCart()},3000)});
 
     document.getElementById('cartBtn').addEventListener('click',showCartView);
     document.querySelectorAll('.tab').forEach(t=>t.addEventListener('click',function(){currentCategory=this.dataset.category;showProductsView()}));
@@ -295,5 +188,18 @@
 
     function showLogin(){adminContent.innerHTML=`<h2>🔐 Вхід</h2><div class="form-group"><input type="text" id="li" placeholder="Логін"></div><div class="form-group"><input type="password" id="pi" placeholder="Пароль"></div><button class="btn" id="loginBtn">Увійти</button><button class="btn btn-outline" id="closeBtn">Закрити</button>`;document.getElementById('loginBtn').addEventListener('click',()=>{if(document.getElementById('li').value===ADMIN.login&&document.getElementById('pi').value===ADMIN.password){isAdminLoggedIn=true;showDashboard()}else alert('Невірно')});document.getElementById('closeBtn').addEventListener('click',closeAdmin)}
 
-    let selectedSizes=[];
-    function showDashboard(){const catOpts=categoryKeys.map(c=>`<option value="${c}">${categoryNames[c]}</option>`).join('');const isEdit=editingProductId!==null;const ep=isEdit?products.find(p=>p.id===editingProductId):null;selectedSizes=(ep&&ep.sizes)?[...ep.sizes]:[];adminContent.innerHTML=`<h2>📦 Управління</h2><p>Назва: <strong>${SHOP_NAME}</strong></p><div class="divider"></div><div class="form-group"><label>Новий логін</label><input type="text" id="nl"></div><div class="form-group"><label>Новий пароль</label><input type="password" id="np"></div><button class="btn btn-save" id="saveCreds">💾 Зберегти доступ</button><div class="divider"></div><h3>${isEdit?'✏️ Редагування':'➕ Додати'}</h3><div class="form-group"><label>Назва</label><input type="text" id="pn" value="${isEdit?ep.name:''}"></div><div class="form-group"><label>Категорія</label><select id="pc">${catOpts}</select></div><div class="form-group"><label>Ціна (₴)</label><input type="number" id="pp" value="${isEdit?ep.price:''}"></div><div class="form-group"><label>URL фото</label><input type="text" id="pi" value="${isEdit?ep.images.join(', '):''}"></div><div class="form-group"><label>Опис</label><textarea id="pd">${isEdit?ep.description:''}</textarea></div><div class="form-group"><label>Розміри</label><div class="size-checkboxes" id="sizeCheckboxes">${allSizes.map(s=>`<div class="size-checkbox ${selectedSizes.includes(s)?'selected':''}" data-size="${s}">${s}</div>`).join('')}</div></div><button class="btn" id="saveProd">${isEdit?'Оновити':'Додати'}</button>${isEdit?'<button class="btn btn-outline" id="cancelEdit">Скасувати</button>':''}<button class="btn btn-outline" id="logout">Вийти</button><div class="admin-product-list" id="adminList"></div>`;if(isEdit)document.getElementById('pc').value=ep.category;renderAdminList();document.querySelectorAll('.size-checkbox').forEach(cb=>{cb.addEventListener('click',function(){const size=this.dataset.size;if(selectedSizes.includes(size)){selectedSizes=selectedSizes.filter(s=>s!==size);this.classList.remove('selected')}else{selectedSizes.push(size);this.classList.add('selected')}})});document.getElementById('saveCreds').addEventListener('click',()=>{const nl=document.getElementById('nl').value.trim(),np=document.getElementById('np').value.trim();if(!nl||!np){alert('Заповніть');return}ADMIN.login=nl;ADMIN.password=np;localStorage.setItem(ADMIN_KEY,JSON.stringify(ADMIN));alert('✅ Збережено')});document.getElementById('saveProd').addEventListener('click',async()=>{const name=document.getElementById('pn').value.trim(),cat=document.getElementById('pc').value,price=+document.getElementById('pp').value,imgs=document.getElementById('pi').value.trim(),desc=document.getElementById('pd').value.trim();if(!name||!price){alert('Заповніть назву та ціну');return}const images=imgs?imgs.split(',').map(s=>s.trim()).filter(s=>s).slice(0,5):['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];if(isEdit){const idx=products.findIndex(p=>p.id
+    let selSizes=[];
+    function showDashboard(){const catOpts=categoryKeys.map(c=>`<option value="${c}">${categoryNames[c]}</option>`).join('');const isEdit=editingProductId!==null;const ep=isEdit?products.find(p=>p.id===editingProductId):null;selSizes=(ep&&ep.sizes)?[...ep.sizes]:[];adminContent.innerHTML=`<h2>📦 Управління</h2><p>Назва: <strong>${SHOP_NAME}</strong></p><div class="divider"></div><div class="form-group"><label>Новий логін</label><input type="text" id="nl"></div><div class="form-group"><label>Новий пароль</label><input type="password" id="np"></div><button class="btn btn-save" id="saveCreds">💾 Зберегти доступ</button><div class="divider"></div><h3>${isEdit?'✏️ Редагування':'➕ Додати'}</h3><div class="form-group"><label>Назва</label><input type="text" id="pn" value="${isEdit?ep.name:''}"></div><div class="form-group"><label>Категорія</label><select id="pc">${catOpts}</select></div><div class="form-group"><label>Ціна (₴)</label><input type="number" id="pp" value="${isEdit?ep.price:''}"></div><div class="form-group"><label>URL фото</label><input type="text" id="pi" value="${isEdit?ep.images.join(', '):''}"></div><div class="form-group"><label>Опис</label><textarea id="pd">${isEdit?ep.description:''}</textarea></div><div class="form-group"><label>Розміри</label><div class="size-checkboxes" id="sizeCheckboxes">${allSizes.map(s=>`<div class="size-checkbox ${selSizes.includes(s)?'selected':''}" data-size="${s}">${s}</div>`).join('')}</div></div><button class="btn" id="saveProd">${isEdit?'Оновити':'Додати'}</button>${isEdit?'<button class="btn btn-outline" id="cancelEdit">Скасувати</button>':''}<button class="btn btn-outline" id="logout">Вийти</button><div class="admin-product-list" id="adminList"></div>`;if(isEdit)document.getElementById('pc').value=ep.category;renderAdminList();document.querySelectorAll('.size-checkbox').forEach(cb=>{cb.addEventListener('click',function(){const s=this.dataset.size;if(selSizes.includes(s)){selSizes=selSizes.filter(x=>x!==s);this.classList.remove('selected')}else{selSizes.push(s);this.classList.add('selected')}})});document.getElementById('saveCreds').addEventListener('click',()=>{const nl=document.getElementById('nl').value.trim(),np=document.getElementById('np').value.trim();if(!nl||!np){alert('Заповніть');return}ADMIN.login=nl;ADMIN.password=np;localStorage.setItem(ADMIN_KEY,JSON.stringify(ADMIN));alert('✅ Збережено')});document.getElementById('saveProd').addEventListener('click',async()=>{const name=document.getElementById('pn').value.trim(),cat=document.getElementById('pc').value,price=+document.getElementById('pp').value,imgs=document.getElementById('pi').value.trim(),desc=document.getElementById('pd').value.trim();if(!name||!price){alert('Заповніть назву та ціну');return}const images=imgs?imgs.split(',').map(s=>s.trim()).filter(s=>s).slice(0,5):['https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600&h=600&fit=crop'];if(isEdit){const idx=products.findIndex(p=>p.id===editingProductId);if(idx!==-1)products[idx]={...products[idx],name,category:cat,price,images,description:desc,sizes:selSizes};editingProductId=null}else products.push({id:Date.now().toString(),name,category:cat,price,images,description:desc,sizes:selSizes});await saveProducts();showProductsView();showDashboard()});if(isEdit)document.getElementById('cancelEdit').addEventListener('click',()=>{editingProductId=null;showDashboard()});document.getElementById('logout').addEventListener('click',()=>{isAdminLoggedIn=false;showLogin()})}
+
+    function renderAdminList(){const lc=document.getElementById('adminList');if(!lc)return;lc.innerHTML=products.map(p=>`<div class="admin-item"><div><strong>${p.name}</strong> [${categoryNames[p.category]}] - ${p.price} ₴${p.sizes&&p.sizes.length?' | Розміри: '+p.sizes.join(', '):''}</div><div><button class="btn-edit" data-id="${p.id}">✏️</button><button class="delete-btn" data-id="${p.id}">🗑</button></div></div>`).join('');document.querySelectorAll('.btn-edit').forEach(b=>b.addEventListener('click',function(){editingProductId=this.dataset.id;showDashboard()}));document.querySelectorAll('.delete-btn').forEach(b=>b.addEventListener('click',async function(){if(confirm('Видалити?')){products=products.filter(p=>p.id!==this.dataset.id);await saveProducts();showProductsView();showDashboard()}}))}
+
+    adminPanel.addEventListener('click',function(e){if(e.target===adminPanel)closeAdmin()});
+    if(location.hash==='#admin'){adminPanel.classList.add('open');showLogin()}
+    window.addEventListener('hashchange',()=>{if(location.hash==='#admin'){adminPanel.classList.add('open');showLogin()}});
+
+    document.getElementById('shopLogo').addEventListener('click',()=>{currentCategory='all';showProductsView()});
+
+    updateCartCount();fetchUsdRate();loadProducts();
+  </script>
+</body>
+</html>
